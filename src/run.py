@@ -2,11 +2,9 @@ import sys
 from PyQt5.QtWidgets import QMainWindow,QApplication
 
 
-from ui_0_1 import Ui_MainWindow
+from ui import Ui_MainWindow
 from game_util import *
 from objects_util import account, player
-
-
 
 class CMonoployApp(QMainWindow):
     def __init__(self):
@@ -17,44 +15,6 @@ class CMonoployApp(QMainWindow):
 
     def initUi(self):
         pass
-
-
-def main_logic(app):
-    #initialize ui info
-    gb_ground_num = 32
-    layout = init_layout_info()
-
-    for i in range(gb_ground_num):
-        app.ui.set_ground_info(i, layout[i].m_name)
-
-    #initialize role info
-    gb_accountList = []  # account list
-    gb_accountList.append(account(1, 200, 200))  # player1's account
-    gb_accountList.append(account(2, 200, 200))  # player2's account
-    gb_player1 = player(1, 'player1', gb_accountList[0], 1, 0)  # init player # position in 0
-    gb_player2 = player(2, 'player2', gb_accountList[1], 2, 0)
-
-    #main logic
-    global gb_player1
-    global gb_player2
-    turn = 0  # init turn
-    the_player = gb_player1
-    while True:
-        # which player's turn and begin player
-        if (turn % 2 == 0):  # player1's turn
-            the_player = gb_player1
-        else:
-            the_player = gb_player2
-
-        print("It is " + the_player.getName() + "'s turn.")
-
-        turnnochange = False
-        move = getDice()
-        app.ui.set_dice(move)
-        makeMove(player, move)
-
-
-
 
 def init_layout_info():
     layoutList = []
@@ -108,6 +68,9 @@ def init_layout_info():
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = CMonoployApp()
-    main_logic(window)
+    #initialization
+    lay_out = init_layout_info(window)
+
+
     window.show()
     sys.exit(app.exec_())
