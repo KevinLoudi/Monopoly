@@ -10,6 +10,7 @@ Classes and objects used in the play board
 
 
 from enum import Enum, unique
+from collections import namedtuple
 
 class PlaceType(Enum):
     GO = 0
@@ -70,3 +71,12 @@ class StreetColor(Enum):
     YELLOW = 5
     GREEN = 6
     BLUE = 7
+
+class RoleColorRef(Enum):
+    Player_1 = 0
+    Player_2 = 1
+    Together = 2
+
+RoleColorRefStr = ['yellow','green','red']
+
+gbGroundNum = 32
