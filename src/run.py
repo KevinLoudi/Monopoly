@@ -26,6 +26,9 @@ def main_logic(app):
 
     for i in range(gb_ground_num):
         app.ui.set_ground_info(i, layout[i].m_name)
+    #main logic
+    global gb_player1
+    global gb_player2
 
     #initialize role info
     gb_accountList = []  # account list
@@ -34,9 +37,6 @@ def main_logic(app):
     gb_player1 = player(1, 'player1', gb_accountList[0], 1, 0)  # init player # position in 0
     gb_player2 = player(2, 'player2', gb_accountList[1], 2, 0)
 
-    #main logic
-    global gb_player1
-    global gb_player2
     turn = 0  # init turn
     the_player = gb_player1
     while True:
@@ -51,7 +51,7 @@ def main_logic(app):
         turnnochange = False
         move = getDice()
         app.ui.set_dice(move)
-        makeMove(player, move)
+        makeMove(the_player, move)
 
 
 
@@ -64,7 +64,7 @@ def init_layout_info():
     layoutList.append(communitychess(2))
     layoutList.append(street(1, 3))
     layoutList.append(tax("Income tax", 4))
-    layoutList.append(station("KING CROSS STATION", 5))
+    layoutList.append(station("KING CROSS STATION","KC Station",5))
     layoutList.append(street(10, 6))
     layoutList.append(chance(7))
     layoutList.append(street(11, 8))
@@ -72,10 +72,10 @@ def init_layout_info():
     layoutList.append(jail())
 
     layoutList.append(street(20, 11))
-    layoutList.append(utility("ELECTRIC COMPANY", 12))
+    layoutList.append(utility("ELECTRIC COMPANY","EC",12))
     layoutList.append(street(21, 13))
     layoutList.append(street(22, 14))
-    layoutList.append(station("MARYLEBONE STATION", 15))
+    layoutList.append(station("MARYLEBONE STATION", "M station", 15))
     layoutList.append(street(30, 16))
     layoutList.append(communitychess(17))
     layoutList.append(street(31, 18))
@@ -86,10 +86,10 @@ def init_layout_info():
     layoutList.append(chance(22))
     layoutList.append(street(41, 23))
     layoutList.append(street(42, 24))
-    layoutList.append(station("FENCHURCH STREET STATION", 25))
+    layoutList.append(station("FENCHURCH STREET STATION","FE station",25))
     layoutList.append(street(50, 26))
     layoutList.append(street(51, 27))
-    layoutList.append(utility("WATER WORKS", 28))
+    layoutList.append(utility("WATER WORKS","WW",28))
     layoutList.append(street(52, 29))
     layoutList.append(gotojail())
 
@@ -97,7 +97,7 @@ def init_layout_info():
     layoutList.append(street(61, 32))
     layoutList.append(communitychess(33))
     layoutList.append(street(62, 34))
-    layoutList.append(station("LIVERPOOL STREET STATION", 35))
+    layoutList.append(station("LIVERPOOL STREET STATION","LS station",35))
     layoutList.append(chance(36))
     layoutList.append(street(70, 37))
     layoutList.append(tax("Super Tax", 38))

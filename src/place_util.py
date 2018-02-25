@@ -335,9 +335,10 @@ def getUltilityDeed(name):
 class utility(place):
     """docstring for utility"""
 
-    def __init__(self, name, position):
+    def __init__(self, name, simplename, position):
         super(utility, self).__init__()
         self.m_name = name
+        self.m_sim_name = simplename
         self.m_type = PlaceType.UTILITY
         self.m_position = position
         self.m_deed = getUltilityDeed(name)
