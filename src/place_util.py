@@ -148,6 +148,7 @@ class go(place):
 
     def __init__(self):
         self.m_name = 'GO'
+        self.m_sim_name = 'GO'
         self.m_type = PlaceType.GO
         self.m_position = 0
         # self.m_position = position(0, 0)
@@ -161,6 +162,7 @@ class jail(place):
     def __init__(self):
         super(jail, self).__init__()
         self.m_name = 'Jail'
+        self.m_sim_name = 'Jail'
         self.m_type = PlaceType.JAIL
         self.m_position = 10
         # self.m_position = position(10, 0)
@@ -173,6 +175,7 @@ class parking(place):
     def __init__(self):
         super(parking, self).__init__()
         self.m_name = 'FreeParking'
+        self.m_sim_name = 'FreePark'
         self.m_type = PlaceType.PARKING
         self.m_position = 20
         # self.m_position = position(10, 0)
@@ -185,6 +188,7 @@ class gotojail(place):
     def __init__(self):
         super(gotojail, self).__init__()
         self.m_name = 'GoToJail'
+        self.m_sim_name = 'GoToJail'
         self.m_type = PlaceType.GOTOJAIL
         self.m_position = 30
         # self.m_position = position(10, 0)
@@ -197,6 +201,7 @@ class chance(place):
     def __init__(self, position):
         super(chance, self).__init__()
         self.m_name = 'Chance'
+        self.m_sim_name = 'Chance'
         self.m_type = PlaceType.CHANCE
         self.m_position = position
         self.m_owner = 'no'
@@ -209,6 +214,7 @@ class communitychess(place):
     def __init__(self, position):
         super(communitychess, self).__init__()
         self.m_name = 'Community Chest'
+        self.m_sim_name = 'CC'
         self.m_type = PlaceType.COMMUNITY_CHEST
         self.m_position = position
         self.m_owner = 'no'
@@ -221,6 +227,7 @@ class tax(place):
     def __init__(self,name, position):
         super(tax, self).__init__()
         self.m_name = name
+        self.m_sim_name = name
         self.m_type = PlaceType.TAX
         self.m_position = position
         self.m_owner = 'no'
@@ -245,22 +252,27 @@ structure of street id:
 # encoding: utf-8
 def load_dict_from_file(filepath):
     _dict = {}
+    _sdict = {}
     try:
         dict_file =  open(filepath, 'r')
         for line in dict_file:
-            (key, value) = line.strip().split('\t')
+            (key, value, svalue) = line.strip().split('\t')
             _dict[int(key)] = value
+            _dict[int(key)] = svalue
     except IOError as ioerr:
         print ("文件 %s 不存在" % (filepath))
 
-    return _dict
+    return _dict,_sdict
 
-NameDict = load_dict_from_file ('namedict.txt')
+NameDict,SNameDict = load_dict_from_file ('namedict.txt')
 
 StreetDict = {}
 
 def getStreetName(streetid):
     return NameDict.get(streetid)
+
+def getStreetSimpleName(streetid):
+    return SNameDict.get(streetid)
 
 
 # def getStreetPosition(streetid):
@@ -299,6 +311,7 @@ class street(place):
 
     def __init__(self, streetid, position, owner='no'):
         self.m_name = getStreetName(streetid)  # street name
+        self.m_sim_name = getStreetSimpleName(streetid) # street simple name
         self.m_type = PlaceType.STREET  # place type
         self.m_position = position  # street position
         self.m_owner = owner  # street owner
@@ -344,9 +357,10 @@ def getStationDeed(name):
 class station(place):
     """docstring for station"""
 
-    def __init__(self, name, position):
+    def __init__(self, name, simplename, position):
         super(station, self).__init__()
         self.m_name = name
+        self.m_sim_name = simplename
         self.m_position = position
         self.m_type = PlaceType.STATION
         self.m_deed = getStationDeed(name)
