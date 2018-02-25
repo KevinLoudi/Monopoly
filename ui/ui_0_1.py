@@ -7,8 +7,6 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from constant import *
-import numpy as np
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -151,13 +149,6 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.player_ix = np.array([0,1])
-        self.pre_player_pos = np.array([0,0])
-        self.cur_player_pos = np.array([0,0])
-        self.show_player_pos()
-        self.turn_token.setCurrentIndex(0)
-        self.go.clicked.connect(self.on_go_clicked) #responds for go
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -206,66 +197,3 @@ class Ui_MainWindow(object):
         self.Ground_32.setText(_translate("MainWindow", "Ground"))
         self.copy_left.setText(_translate("MainWindow", "No right reserved, Welcome to copy and paste"))
 
-    #player_ix: 0 (player 1), 1(player 2)
-    def show_player_pos(self, player_ix = [0,1],pre_pos = [0,0],pos = [0,0]):
-        ix_1 = player_ix[0]
-        ix_2 = player_ix[1]
-
-        #remove display of previous pos
-        print("pre_pos 1: {0}, 2: {1}".format(pre_pos[0], pre_pos[1]))
-        exec("self.Ground_{0}.setStyleSheet('background-color: {1}')".format(pre_pos[0] + 1, 'none'))
-        exec("self.Ground_{0}.setStyleSheet('background-color: {1}')".format(pre_pos[1] + 1, 'none'))
-
-        #if two player stand at the same place
-        print("pos 1: {0}, pos 2: {1}".format(pos[ix_1], pos[ix_2]))
-        if pos[ix_1] == pos[ix_2]:
-            exec("self.Ground_{0}.setStyleSheet('background-color: {1}')".format(pos[ix_1] + 1, 'red'))
-        else:
-            exec("self.Ground_{0}.setStyleSheet('background-color: {1}')".format(pos[ix_1] + 1, 'yellow'))
-            exec("self.Ground_{0}.setStyleSheet('background-color: {1}')".format(pos[ix_2] + 1, 'green'))
-
-        #update info
-
-
-    #action aft click go
-    def on_go_clicked(self):
-        import numpy.random as random
-        #get dice and display
-        self.latest_dice = random.randint(1, 6, 1) #+ random.randint(1, 6, 1)
-        self.dice.setText("Dice: [{0}]".format(self.latest_dice))
-
-        #calculate
-        pre_player_pos = self.cur_player_pos
-        cur_player = self.turn_token.currentIndex()
-        print("cur_play: {0}".format(cur_player))
-
-        if cur_player == 0:
-            self.turn_token.setCurrentIndex(1)
-        else:
-            self.turn_token.setCurrentIndex(0)
-
-        new_player_pos = np.array([pre_player_pos[0],pre_player_pos[1]])
-
-        if new_player_pos[cur_player] + self.latest_dice > gbGroundNum - 1:
-            new_player_pos[cur_player] = new_player_pos[cur_player] + self.latest_dice
-            new_player_pos[cur_player] = new_player_pos[cur_player] - (gbGroundNum - 1)
-        else:
-            new_player_pos[cur_player] = new_player_pos[cur_player] + self.latest_dice
-
-        #update player position
-        print("player1 pos: {0}, player2 pos: {1}, player1 pre_pos: {2}, player2 pre_pos: {3}".format(new_player_pos[0],new_player_pos[1],pre_player_pos[0],pre_player_pos[1]))
-        self.show_player_pos(self.player_ix, pre_player_pos, new_player_pos)
-
-        #refresh data for next run
-        self.cur_player_pos = new_player_pos
-
-        #update info
-        self.info.setText("Move Player 1 from {0} to {1} \n Move Player 2 from {2} to {3}".format(
-            pre_player_pos[0], pre_player_pos[1],new_player_pos[0], new_player_pos[1]))
-
-
-        def on_skip(self):
-            pass
-
-        def on_buy(self):
-            pass

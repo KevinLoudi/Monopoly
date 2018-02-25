@@ -69,8 +69,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = CMonoployApp()
     #initialization
-    lay_out = init_layout_info(window)
-
-
+    lay_out = init_layout_info()
     window.show()
     sys.exit(app.exec_())
